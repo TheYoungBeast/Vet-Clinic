@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.LoginFxController">
+    <children>
+        <BorderPane prefHeight="408.0" prefWidth="640.0">
+            <left>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <ImageView fitHeight="448.0" fitWidth="315.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@funny-dog.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </AnchorPane>
+            </left>
+            <right>
+                <AnchorPane prefHeight="448.0" prefWidth="365.0" style="-fx-background-color: #f1eff0;" BorderPane.alignment="CENTER">
+                    <children>
+                        <BorderPane layoutX="95.0" layoutY="188.0" />
+                        <Label alignment="CENTER_RIGHT" layoutX="20.0" layoutY="153.0" prefHeight="17.0" prefWidth="65.0" text="User" textAlignment="RIGHT" />
+                        <Label alignment="CENTER_RIGHT" layoutX="23.0" layoutY="192.0" prefHeight="17.0" prefWidth="59.0" text="Password" textAlignment="RIGHT" />
+                        <TextField fx:id="inputUser" layoutX="94.0" layoutY="149.0" prefHeight="25.0" prefWidth="185.0" />
+                        <ImageView fitHeight="167.0" fitWidth="109.0" layoutX="132.0" layoutY="14.0" preserveRatio="true">
+                            <image>
+                                <Image url="@north-colony-logo2.png" />
+                            </image>
+                        </ImageView>
+                        <PasswordField fx:id="inputPassword" layoutX="95.0" layoutY="188.0" prefHeight="25.0" prefWidth="184.0" />
+                        <Button fx:id="buttonLogin" layoutX="144.0" layoutY="267.0" mnemonicParsing="false" onAction="#LoginOnAction" text="Login" />
+                        <Label fx:id="labelLoginInfo" alignment="CENTER" ellipsisString="" layoutX="43.0" layoutY="292.0" prefHeight="39.0" prefWidth="248.0" text="Provided username or password is invalid. Please try again!" textAlignment="CENTER" textFill="#eb0808" textOverrun="CLIP" visible="false" wrapText="true" />
+                  <Hyperlink layoutX="203.0" layoutY="386.0" onAction="#OnRegisterNow" text="Register now" />
+                  <Label layoutX="71.0" layoutY="389.0" prefHeight="17.0" prefWidth="147.0" text="Nie masz jeszcze konta?" />
+                    </children>
+                </AnchorPane>
+            </right>
+        </BorderPane>
+    </children>
+</AnchorPane>

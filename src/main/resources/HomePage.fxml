@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Avatar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="865.0" prefWidth="1219.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.HomeFxController">
+   <children>
+      <VBox prefHeight="865.0" prefWidth="1219.0">
+         <children>
+            <AnchorPane prefHeight="97.0" prefWidth="1219.0" style="-fx-background-color: white; -fx-border-style: hidden hidden solid hidden; -fx-border-width: 1; -fx-border-color: lightgray;">
+               <children>
+                  <ImageView fitHeight="113.0" fitWidth="114.0" layoutX="32.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@blue.jpg" />
+                     </image>
+                  </ImageView>
+                  <Avatar layoutX="1112.0" layoutY="23.0" radius="35.0">
+                     <image>
+                        <Image url="@Pet_Doctor-512.png" />
+                     </image>
+                  </Avatar>
+                  <Label layoutX="1049.0" layoutY="50.0" text="Label" />
+               </children>
+            </AnchorPane>
+            <VBox prefHeight="753.0" prefWidth="1219.0">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <SplitPane dividerPositions="0.33, 0.66" prefHeight="677.0" prefWidth="1219.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="578.0">
+                           <children>
+                              <TitledPane animated="false" prefHeight="675.0" prefWidth="399.0" text="Dyżury">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="649.0" prefWidth="445.0" />
+                                </content>
+                              </TitledPane>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="675.0" prefWidth="451.0">
+                           <children>
+                              <TitledPane animated="false" prefHeight="677.0" prefWidth="399.0" text="Pacjenci">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                              </TitledPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="158.0" prefWidth="546.0">
+                           <children>
+                              <TitledPane animated="false" prefHeight="675.0" prefWidth="411.0" text="Idk co">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                              </TitledPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="1219.0" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

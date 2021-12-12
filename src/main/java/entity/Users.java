@@ -1,12 +1,11 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Users {
+@NamedQuery(name="Users.Login", query = "SELECT u FROM Users u WHERE u.login = ?1 and u.password = ?2")
+public class Users
+{
     private long id;
     private String login;
     private String password;
@@ -50,6 +49,16 @@ public class Users {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 
     @Override

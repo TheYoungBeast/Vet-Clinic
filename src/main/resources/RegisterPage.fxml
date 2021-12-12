@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.RegisterFxController">
+   <children>
+      <BorderPane prefHeight="547.0" prefWidth="596.0" style="-fx-background-color: #FFFFFF;">
+         <top>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="228.0" fitWidth="616.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@dogs-and-cats-peeking-over-web-banner-picture-id930281684.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" layoutY="195.0" prefHeight="23.0" prefWidth="600.0" text="Sign In ">
+                     <font>
+                        <Font name="Calibri" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+         <center>
+            <AnchorPane prefHeight="368.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="labelRegisterInfo" alignment="CENTER" layoutX="88.0" layoutY="205.0" prefHeight="18.0" prefWidth="450.0" text="Fields cannot by empty..." textFill="#ff0707" visible="false" />
+                  <HBox layoutY="1.0" prefHeight="188.0" prefWidth="600.0">
+                     <children>
+                        <AnchorPane prefHeight="210.0" prefWidth="300.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" layoutX="18.0" layoutY="30.0" prefHeight="18.0" prefWidth="97.0" text="Username" />
+                              <TextField fx:id="inputUsername" layoutX="124.0" layoutY="26.0" promptText="Username" />
+                              <Label alignment="CENTER_RIGHT" layoutX="-12.0" layoutY="70.0" prefHeight="18.0" prefWidth="127.0" text="Password" />
+                              <Label alignment="CENTER_RIGHT" layoutX="-10.0" layoutY="106.0" prefHeight="18.0" prefWidth="125.0" text="Confirm Password" />
+                              <PasswordField fx:id="inputPassword" layoutX="124.0" layoutY="66.0" promptText="Password" />
+                              <PasswordField fx:id="inputConfirmPassword" layoutX="124.0" layoutY="102.0" promptText="Password" />
+                              <TextField fx:id="inputEmail" layoutX="124.0" layoutY="138.0" promptText="email@example.com" />
+                              <Label alignment="CENTER_RIGHT" layoutX="26.0" layoutY="142.0" prefHeight="18.0" prefWidth="89.0" text="Email" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="185.0" prefWidth="290.0" style="-fx-border-style: hidden hidden hidden solid; -fx-border-color: lightgray;">
+                           <children>
+                              <TextField fx:id="inputName" layoutX="77.0" layoutY="30.0" promptText="Name" />
+                              <Label alignment="CENTER_RIGHT" layoutX="-21.0" layoutY="34.0" prefHeight="18.0" prefWidth="89.0" text="Name" />
+                              <TextField fx:id="inputSurname" layoutX="77.0" layoutY="63.0" promptText="Surname" />
+                              <Label alignment="CENTER_RIGHT" layoutX="-17.0" layoutY="67.0" prefHeight="18.0" prefWidth="89.0" text="Surname" />
+                              <TextField fx:id="inputPesel" layoutX="77.0" layoutY="98.0" promptText="PESEL" />
+                              <Label alignment="CENTER_RIGHT" layoutX="-17.0" layoutY="102.0" prefHeight="18.0" prefWidth="89.0" text="PESEL" />
+                              <Label alignment="CENTER_RIGHT" layoutX="-17.0" layoutY="135.0" prefHeight="18.0" prefWidth="89.0" text="Adress" />
+                              <TextArea fx:id="inputAdress" layoutX="76.0" layoutY="131.0" prefHeight="44.0" prefWidth="161.0" promptText="Warsaw 00-19 ul. 3 maja 55a" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <Label fx:id="labelRegisterInfo" alignment="CENTER" layoutX="25.0" layoutY="223.0" prefHeight="18.0" prefWidth="557.0" text="Label" textAlignment="CENTER" textFill="#f80000" visible="false" wrapText="true" />
+                  <Button fx:id="buttonSignin" layoutX="223.0" layoutY="275.0" mnemonicParsing="false" onAction="#onSignIn" style="-fx-background-color: lightblue;" text="Sign in" />
+                  <Button fx:id="buttonCancel" layoutX="322.0" layoutY="275.0" mnemonicParsing="false" onAction="#onCancel" style="-fx-background-color: lightblue;" text="Cancel" />
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
