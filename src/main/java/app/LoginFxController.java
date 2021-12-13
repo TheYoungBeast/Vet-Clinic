@@ -47,6 +47,7 @@ public class LoginFxController
             labelLoginInfo.setVisible(true);
         else
         {
+            LoggedUserInfo.getInstance().setUser(namedQuery.getSingleResult());
             labelLoginInfo.setVisible(true);
             labelLoginInfo.setText("Logowanie poprawne");
             labelLoginInfo.setTextFill(Color.GREEN);

@@ -1,11 +1,9 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@NamedQuery(name="Employees.GetEmploById", query = "select e from Employees e where e.usersId = ?1")
 public class Employees {
     private long usersId;
     private String name;

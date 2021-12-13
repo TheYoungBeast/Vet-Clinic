@@ -9,9 +9,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application
-{
+public class Main extends Application {
     public static final String appIconPath = "../blue.jpg";
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -21,25 +21,27 @@ public class Main extends Application
         Main.createStage("../LoginPage.fxml", "Vet Clinic: Login");
     }
 
-    public static Stage createStage(String fxmlFilePath, String title)
+    public static <T> Stage createStage(String fxmlFilePath, String title, T controller)
     {
         Stage stage = new Stage();
-        try
-        {
-            Parent root = FXMLLoader.load(Main.class.getResource(fxmlFilePath));
-            Scene scene = new Scene(root);
+        try {
+            FXMLLoader root = new FXMLLoader(Main.class.getResource(fxmlFilePath));
+            controller = root.getController();
+            Scene scene = new Scene(root.load());
             stage.getIcons().add(new Image(Main.class.getResourceAsStream(Main.appIconPath)));
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle(title);
             stage.show();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             e.getCause();
         }
 
         return stage;
+    }
+
+    public static Stage createStage(String fxmlFilePath, String title) {
+        return createStage(fxmlFilePath, title, null);
     }
 }

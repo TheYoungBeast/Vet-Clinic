@@ -1,12 +1,10 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
+@NamedQuery(name = "Patients.AllPatients", query = "select p from Patients p")
 public class Patients {
     private long petId;
     private long ownerId;
@@ -84,6 +82,15 @@ public class Patients {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    @Override
+    public String toString() {
+        return  petName + ' ' +
+                sex + ' ' +
+                species + ' ' +
+                breed + ' ' +
+                birthDate;
     }
 
     @Override

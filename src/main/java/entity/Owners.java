@@ -1,11 +1,9 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@NamedQuery(name="Owners.AllOwners", query = "select o from Owners o")
 public class Owners {
     private long ownerId;
     private String name;
@@ -77,6 +75,15 @@ public class Owners {
         if (email != null ? !email.equals(owners.email) : owners.email != null) return false;
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        String phoneNo = String.valueOf(phoneeNumber);
+
+        return name + ' ' +
+               surname + " " +
+               phoneNo.substring(0, 3) + "-" + phoneNo.substring(3, 6) + "-" + phoneNo.substring(6, 9);
     }
 
     @Override

@@ -10,9 +10,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import jdk.jpackage.internal.Log;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 public class RegisterFxController
 {
@@ -54,25 +54,34 @@ public class RegisterFxController
                 labelRegisterInfo.setVisible(true);
                 labelRegisterInfo.setText("Fields cannot be empty");
             }
-            else {
+            else
+            {
+                EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+                EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+                Query nativeQuery = entityManager.createNativeQuery("SELECT SBD_ST_PS6_4.USERID_SEQUENCE.nextval as id FROM DUAL");
+
+                long id = ((BigDecimal) nativeQuery.getSingleResult()).longValue();
                 Users user = new Users();
+                user.setId(id);
                 user.setLogin(inputUsername.getText());
                 user.setPassword(inputPassword.getText());
                 user.setEmail(inputEmail.getText());
 
-                EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-                EntityManager entityManager = entityManagerFactory.createEntityManager();
+                System.out.print(user);
 
-                entityManager.getTransaction().begin();
-
-                try {
+                try
+                {
+                    entityManager.getTransaction().begin();
                     entityManager.persist(user);
+                    entityManager.getTransaction().commit();
                 }
                 catch (EntityExistsException | NonUniqueResultException | RollbackException exception)
                 {
                     labelRegisterInfo.setVisible(true);
                     labelRegisterInfo.setText(exception.getMessage());
-                    entityManager.getTransaction().rollback();
+                    if(entityManager.getTransaction().isActive())
+                        entityManager.getTransaction().rollback();
                     return;
                 }
 
@@ -80,24 +89,29 @@ public class RegisterFxController
                 {
                     System.out.print(String.format("UserId: %d", user.getId()));
                     Employees employee = new Employees();
-                    employee.setUsersId(1);
+                    employee.setUsersId(user.getId());
                     employee.setName(name);
                     employee.setSurname(inputSurname.getText());
                     employee.setPesel(Long.valueOf(pesel));
                     employee.setAdress(inputAdress.getText());
                     employee.setPosition("Employee");
 
+                    entityManager.getTransaction().begin();
                     entityManager.persist(employee);
+                    entityManager.getTransaction().commit();
                 }
                 catch (EntityExistsException | NonUniqueResultException | RollbackException exception)
                 {
                     labelRegisterInfo.setVisible(true);
                     labelRegisterInfo.setText(exception.getMessage());
-                    entityManager.getTransaction().rollback();
+                    if(entityManager.getTransaction().isActive())
+                        entityManager.getTransaction().rollback();
                     return;
                 }
-
-                entityManager.getTransaction().commit();
+                finally {
+                    entityManager.close();
+                    entityManagerFactory.close();
+                }
 
                 labelRegisterInfo.setText("Rejestracja przebiegła pomyślnie");
                 labelRegisterInfo.setTextFill(Color.GREEN);

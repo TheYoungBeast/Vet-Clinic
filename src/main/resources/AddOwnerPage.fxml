@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="352.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.AddOwnerFxController">
+   <children>
+      <BorderPane layoutX="-25.0" layoutY="-32.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f1f1f3;">
+         <right>
+            <ImageView fitHeight="402.0" fitWidth="267.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@funny_dog_3.png" />
+               </image>
+            </ImageView>
+         </right>
+         <left>
+            <VBox alignment="CENTER" prefHeight="401.0" prefWidth="303.0" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane prefHeight="279.0" prefWidth="303.0" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="5.0" prefWidth="333.0" style="-fx-padding: 10 25 10 0;">
+                     <children>
+                        <Label text="Name">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="inputName" promptText="Name" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="32.0" prefHeight="5.0" prefWidth="333.0" style="-fx-padding: 10 25 10 0;">
+                     <children>
+                        <Label text="Surname">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="inputSurname" promptText="Surname" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="77.0" prefHeight="45.0" prefWidth="267.0" style="-fx-padding: 10 25 10 0;">
+                     <children>
+                        <Label text="Phone Number">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="inputPhone" promptText="785 564 224" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="244.0" prefHeight="5.0" prefWidth="333.0" style="-fx-padding: 10 25 10 0;">
+                     <children>
+                        <Label text="Email">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="inputEmail" promptText="name.surname@gmail.com" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="231.0" style="-fx-padding: 30 80 0 0;">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#OnAddOwner" style="-fx-background-color: lightblue;" text="Add">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#OnCancel" style="-fx-background-color: lightblue;" text="Cancel">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>
