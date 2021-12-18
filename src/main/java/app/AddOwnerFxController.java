@@ -60,7 +60,7 @@ public class AddOwnerFxController
             entityManagerFactory.close();
         }
 
-        //controller.AddOwnerOnSuccess(owner);
+        controller.AddOwnerOnSuccess(owner);
 
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();

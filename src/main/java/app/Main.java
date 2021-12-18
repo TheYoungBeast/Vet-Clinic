@@ -21,13 +21,17 @@ public class Main extends Application {
         Main.createStage("../LoginPage.fxml", "Vet Clinic: Login");
     }
 
-    public static <T> Stage createStage(String fxmlFilePath, String title, T controller)
+    public static Stage createStage(String fxmlFilePath, String title, Command command)
     {
         Stage stage = new Stage();
         try {
             FXMLLoader root = new FXMLLoader(Main.class.getResource(fxmlFilePath));
-            controller = root.getController();
-            Scene scene = new Scene(root.load());
+            Parent p = root.load();
+
+            if(command != null)
+                command.execute(root.getController());
+
+            Scene scene = new Scene(p);
             stage.getIcons().add(new Image(Main.class.getResourceAsStream(Main.appIconPath)));
             stage.setScene(scene);
             stage.setResizable(false);

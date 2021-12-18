@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="375.0" prefWidth="622.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.AddPatientFxController">
    <children>
       <AnchorPane prefHeight="382.0" prefWidth="587.0">
@@ -34,12 +33,12 @@
                   <Insets right="10.0" />
                </padding>
             </Label>
-            <Label layoutX="32.0" layoutY="95.0" text="Spiecies">
+            <Label layoutX="32.0" layoutY="95.0" text="Species">
                <padding>
                   <Insets right="10.0" />
                </padding>
             </Label>
-            <TextField fx:id="inputSpiecies" layoutX="85.0" layoutY="91.0" prefHeight="25.0" prefWidth="174.0" promptText="Dog" />
+            <TextField fx:id="inputSpecies" layoutX="85.0" layoutY="91.0" prefHeight="25.0" prefWidth="174.0" promptText="Dog" />
             <Label layoutX="44.0" layoutY="132.0" text="Breed">
                <padding>
                   <Insets right="10.0" />
@@ -56,17 +55,17 @@
                   <Insets right="10.0" />
                </padding>
             </Label>
-            <TextField editable="false" layoutX="85.0" layoutY="211.0" prefHeight="25.0" prefWidth="174.0" />
+            <TextField fx:id="inputOwner" editable="false" layoutX="85.0" layoutY="211.0" prefHeight="25.0" prefWidth="174.0" />
             <ListView fx:id="ownersList" layoutX="40.0" layoutY="275.0" prefHeight="84.0" prefWidth="220.0" />
-            <TextField layoutX="40.0" layoutY="250.0" prefHeight="25.0" prefWidth="161.0" promptText="Owner Name" />
+            <TextField fx:id="inputSearch" layoutX="40.0" layoutY="250.0" prefHeight="25.0" prefWidth="161.0" promptText="Owner Name" />
             <Button fx:id="buttonAdd" layoutX="232.0" layoutY="249.0" mnemonicParsing="false" onAction="#OnAddOwner" prefHeight="27.0" prefWidth="29.0" text="➕" textFill="#26e452" />
-            <Button fx:id="buttonSearch" layoutX="201.0" layoutY="249.0" mnemonicParsing="false" text="🔍">
+            <Button fx:id="buttonSearch" layoutX="201.0" layoutY="249.0" mnemonicParsing="false" onAction="#OnSearchList" text="🔍">
                <font>
                   <Font size="13.0" />
                </font>
             </Button>
-            <Button layoutX="85.0" layoutY="388.0" mnemonicParsing="false" style="-fx-background-color: lightblue;" text="Add" />
-            <Button layoutX="165.0" layoutY="388.0" mnemonicParsing="false" style="-fx-background-color: lightblue;" text="Cancel" />
+            <Button layoutX="85.0" layoutY="388.0" mnemonicParsing="false" onAction="#OnPatientAdd" style="-fx-background-color: lightblue;" text="Add" />
+            <Button layoutX="165.0" layoutY="388.0" mnemonicParsing="false" onAction="#OnCancel" style="-fx-background-color: lightblue;" text="Cancel" />
          </children>
       </AnchorPane>
    </children>

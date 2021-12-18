@@ -20,6 +20,20 @@ public class HomeFxController implements Initializable
     @FXML
     private ListView<Patients> patientList;
 
+    private final Command command = new Command() {
+        private HomeFxController ctrl;
+        @Override
+        public void setDelegate(Object o) {
+            ctrl = (HomeFxController) o;
+        }
+
+        @Override
+        public void execute(Object o) {
+            AddPatientFxController con = (AddPatientFxController) o;
+            con.setHomeController(ctrl);
+        }
+    };
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -61,6 +75,15 @@ public class HomeFxController implements Initializable
     }
     @FXML
     private void OnAddPatient(@SuppressWarnings("UnusedParameter")ActionEvent event) {
-        Main.createStage("../AddPatientPage.fxml", "Vet Clinic: Add Patient");
+        command.setDelegate(this);
+        Main.createStage("../AddPatientPage.fxml", "Vet Clinic: Add Patient", command);
+    }
+
+    public void OnAddPatientSuccessful(Patients p) {
+        patientList.getItems().add(p);
+    }
+
+    @FXML void OnAddVisit(@SuppressWarnings("UnusedParameter")ActionEvent event) {
+        Main.createStage("../AddVisitPage.fxml", "Vet Clinic: Add Visit");
     }
 }
