@@ -1,18 +1,16 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.sql.Date;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
+@NamedQuery(name = "SHIFTS.GetAll", query = "select s from Shifts s")
 public class Shifts {
     private long shiftId;
     private long vetId;
     private long clinicId;
-    private Date startDate;
-    private Date endDate;
+    private Timestamp startDate;
+    private Timestamp endDate;
 
     @Id
     @Column(name = "SHIFT_ID")
@@ -46,21 +44,21 @@ public class Shifts {
 
     @Basic
     @Column(name = "START_DATE")
-    public Date getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
     @Basic
     @Column(name = "END_DATE")
-    public Date getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 

@@ -1,32 +1,34 @@
 package app;
 
-import entity.Employees;
-import entity.Owners;
-import entity.Patients;
-import entity.Veterinarians;
+import entity.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddVisitFxController implements Initializable
 {
+    @FXML private HBox dateHBox;
+
     @FXML private TextField selectedPatientField;
     @FXML private TextField selectedVetField;
 
@@ -57,9 +59,13 @@ public class AddVisitFxController implements Initializable
     private Employees selectedVet = null;
     private Patients selectedPatient = null;
 
+    private DateTimePicker dateTimePicker = new DateTimePicker();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        dateHBox.getChildren().add(dateTimePicker);
+
         petNameColumn.setCellValueFactory(new PropertyValueFactory<>("petName"));
         sexColumn.setCellValueFactory(new PropertyValueFactory<>("sex"));
         speciesColumn.setCellValueFactory(new PropertyValueFactory<>("species"));
@@ -219,5 +225,52 @@ public class AddVisitFxController implements Initializable
                 }
             }
         });
+    }
+
+    @FXML private void OnVisitAdd(ActionEvent event) {
+
+        if(selectedPatient == null || selectedVet == null || dateTimePicker.getDateTimeValue() == null)
+            return;
+
+        EntityManager entityManager = EntityManagerFacade.createEntityManager();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            Query nativeQuery = entityManager.createNativeQuery("SELECT SBD_ST_PS6_4.SEQUENCE_ID_VISITS.nextval as id FROM DUAL");
+            long id = ((BigDecimal) nativeQuery.getSingleResult()).longValue();
+
+            Visits visit = new Visits();
+            visit.setVisitId(id);
+            visit.setPetId(selectedPatient.getPetId());
+            visit.setVetId(selectedVet.getUsersId());
+            visit.setDate(Timestamp.valueOf(dateTimePicker.getDateTimeValue()));
+            visit.setStatus("PENDING");
+
+            entityManager.persist(visit);
+
+            entityManager.getTransaction().commit();
+        }
+        catch (EntityExistsException | NonUniqueResultException | RollbackException exception)
+        {
+            exception.printStackTrace();
+            exception.getCause();
+
+            if(entityManager.getTransaction().isActive())
+                entityManager.getTransaction().rollback();
+        }
+        finally {
+            EntityManagerFacade.close();
+        }
+
+        Node node = (Node) event.getSource();
+        Stage thisStage = (Stage) node.getScene().getWindow();
+        thisStage.close();
+    }
+
+    @FXML private void OnCancel(ActionEvent event) {
+        Node node = (Node) event.getSource();
+        Stage thisStage = (Stage) node.getScene().getWindow();
+        thisStage.close();
     }
 }

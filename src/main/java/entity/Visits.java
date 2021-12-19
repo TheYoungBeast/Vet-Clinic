@@ -4,14 +4,14 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 public class Visits {
     private long visitId;
     private long vetId;
     private long petId;
-    private Date date;
+    private Timestamp date;
     private String status;
 
     @Id
@@ -45,12 +45,12 @@ public class Visits {
     }
 
     @Basic
-    @Column(name = "Date")
-    public Date getDate() {
+    @Column(name = "VISIT_DATE")
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
