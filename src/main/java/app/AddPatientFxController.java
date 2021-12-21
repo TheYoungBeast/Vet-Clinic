@@ -75,6 +75,8 @@ public class AddPatientFxController implements Initializable
         ownersList.getItems().clear();
         ownersList.getItems().addAll(allOwners);
         inputSearch.setText(null);
+
+        homeController.OnAddOwnerSuccessful(owner);
     }
 
     @Override

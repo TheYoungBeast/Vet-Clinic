@@ -1,11 +1,10 @@
 package app;
 
-import entity.Employees;
-import entity.Patients;
-import entity.Shifts;
-import entity.Visits;
+import entity.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +13,7 @@ import javafx.scene.control.*;
 import javax.persistence.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class HomeFxController implements Initializable
@@ -26,6 +25,7 @@ public class HomeFxController implements Initializable
     @FXML private TextField visitsFilter;
 
     @FXML private TableView<Shifts> shiftsTableView;
+    @FXML private TableView<Visits> visitsTableView;
 
     @FXML private TableColumn<Shifts, String> shiftStartDateCol;
     @FXML private TableColumn<Shifts, String> shiftEndDateCol;
@@ -45,6 +45,8 @@ public class HomeFxController implements Initializable
     private ObservableList<Visits> visits = FXCollections.observableArrayList();
 
     private ArrayList<Employees> vets = null;
+    private ArrayList<Patients> pets = null;
+    private ArrayList<Owners> owners = null;
 
     private final Command command = new Command() {
         private HomeFxController ctrl;
@@ -186,7 +188,173 @@ public class HomeFxController implements Initializable
         });
 
         // visits cell factory
-        visitHourCol.setCellFactory(factory -> new TableCell<Visits, String>());
+        visitHourCol.setCellFactory(factory -> new TableCell<Visits, String>() {
+            @Override
+            protected void updateItem(String s, boolean b) {
+                super.updateItem(s, b);
+
+                if (b) {
+                    setText(null);
+                    return;
+                }
+
+                Visits visit = getTableView().getItems().get(getIndex());
+                if (visit == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(visit.getDate().toLocalDateTime().toLocalTime().toString().substring(0,5));
+            }
+        });
+
+        visitVetCol.setCellFactory(factory -> new TableCell<Visits, String>() {
+            @Override
+            protected void updateItem(String s, boolean b) {
+                super.updateItem(s, b);
+
+                if (b) {
+                    setText(null);
+                    return;
+                }
+
+                Visits visit = getTableView().getItems().get(getIndex());
+                if (visit == null) {
+                    setText(null);
+                    return;
+                }
+
+                long vetId = visit.getVetId();
+                Employees vet = vets.stream().filter(v -> v.getUsersId() == vetId).findFirst().orElse(null);
+
+                if(vet == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(String.format("%s %s", vet.getName(), vet.getSurname()));
+            }
+        });
+
+        visitPetCol.setCellFactory(factory -> new TableCell<Visits, String>() {
+            @Override
+            protected void updateItem(String s, boolean b) {
+                super.updateItem(s, b);
+
+                if (b) {
+                    setText(null);
+                    return;
+                }
+
+                Visits visit = getTableView().getItems().get(getIndex());
+                if (visit == null) {
+                    setText(null);
+                    return;
+                }
+
+                long petId = visit.getPetId();
+                Patients pet = pets.stream().filter(p -> p.getPetId() == petId).findFirst().orElse(null);
+
+                if(pet == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(pet.getPetName());
+            }
+        });
+
+        visitSpeciesCol.setCellFactory(factory -> new TableCell<Visits, String>() {
+            @Override
+            protected void updateItem(String s, boolean b) {
+                super.updateItem(s, b);
+
+                if (b) {
+                    setText(null);
+                    return;
+                }
+
+                Visits visit = getTableView().getItems().get(getIndex());
+                if (visit == null) {
+                    setText(null);
+                    return;
+                }
+
+                long petId = visit.getPetId();
+                Patients pet = pets.stream().filter(p -> p.getPetId() == petId).findFirst().orElse(null);
+
+                if(pet == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(pet.getSpecies());
+            }
+        });
+
+        visitBreedCol.setCellFactory(factory -> new TableCell<Visits, String>() {
+            @Override
+            protected void updateItem(String s, boolean b) {
+                super.updateItem(s, b);
+
+                if (b) {
+                    setText(null);
+                    return;
+                }
+
+                Visits visit = getTableView().getItems().get(getIndex());
+                if (visit == null) {
+                    setText(null);
+                    return;
+                }
+
+                long petId = visit.getPetId();
+                Patients pet = pets.stream().filter(p -> p.getPetId() == petId).findFirst().orElse(null);
+
+                if(pet == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(pet.getBreed());
+            }
+        });
+
+        visitOwnerCol.setCellFactory(factory -> new TableCell<Visits, String>() {
+            @Override
+            protected void updateItem(String s, boolean b) {
+                super.updateItem(s, b);
+
+                if (b) {
+                    setText(null);
+                    return;
+                }
+
+                Visits visit = getTableView().getItems().get(getIndex());
+                if (visit == null) {
+                    setText(null);
+                    return;
+                }
+
+                long petId = visit.getPetId();
+                Patients pet = pets.stream().filter(p -> p.getPetId() == petId).findFirst().orElse(null);
+
+                if(pet == null) {
+                    setText(null);
+                    return;
+                }
+
+                long ownerId = pet.getOwnerId();
+                Owners owner = HomeFxController.this.owners.stream().filter(o -> o.getOwnerId() == ownerId).findFirst().orElse(null);
+
+                if(owner == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(String.format("%s %s", owner.getName(), owner.getSurname()));
+            }
+        });
 
         EntityManager entityManager = EntityManagerFacade.createEntityManager();
 
@@ -205,10 +373,70 @@ public class HomeFxController implements Initializable
             shifts.addAll(allShiftQuery.getResultList());
 
             TypedQuery<Patients> allPatientsQuery = entityManager.createNamedQuery("Patients.AllPatients", Patients.class);
-            List<Patients> resultPatients = allPatientsQuery.getResultList();
+            pets = new ArrayList<>( allPatientsQuery.getResultList() );
+
+            TypedQuery<Owners> allOwnersQuery = entityManager.createNamedQuery("Owners.AllOwners", Owners.class);
+            owners = new ArrayList<>( allOwnersQuery.getResultList() );
+
+            Query allVisitsToday = entityManager.createNativeQuery("SELECT * from VISITS v where trunc(v.VISIT_DATE) = TO_DATE(TO_CHAR(cast(sysdate as date),'YYYY-MM-DD'))", Visits.class);
+            visits.addAll(allVisitsToday.getResultList());
+
             entityManager.getTransaction().commit();
 
-            shiftsTableView.setItems(shifts);
+            FilteredList<Visits> visitsFilteredList = new FilteredList<>(visits, p -> true);
+            FilteredList<Shifts> shiftsFilteredList = new FilteredList<>(shifts, p -> true);
+
+            visitsFilter.textProperty().addListener(((observableValue, s, t1) -> {
+                visitsFilteredList.setPredicate(visit -> {
+                    if(t1 == null || t1.isEmpty())
+                        return true;
+
+                    String keyword = t1.toLowerCase();
+
+                    Patients pet = pets.stream().filter(p -> p.getPetId() == visit.getPetId()).findFirst().orElse(null);
+                    if(pet == null)
+                        return false;
+
+                    Owners owner = owners.stream().filter(o -> o.getOwnerId() == pet.getOwnerId()).findFirst().orElse(null);
+                    if (owner == null)
+                        return false;
+
+                    Employees vet = vets.stream().filter(v -> v.getUsersId() == visit.getVetId()).findFirst().orElse(null);
+
+                    if (pet.getPetName().toLowerCase().contains(keyword) || pet.getSpecies().toLowerCase().contains(keyword) ||
+                            pet.getBreed().toLowerCase().contains(keyword) || owner.getName().toLowerCase().contains(keyword) ||
+                            owner.getSurname().toLowerCase().contains(keyword) || vet.getSurname().toLowerCase().contains(keyword) || vet.getName().toLowerCase().contains(keyword))
+                        return true;
+
+                    return false;
+                });
+            }));
+
+            shiftsFilter.textProperty().addListener(((observableValue, s, t1) -> {
+                shiftsFilteredList.setPredicate(shift -> {
+                    if(t1 == null || t1.isEmpty())
+                        return true;
+
+                    String keyword = t1.toLowerCase();
+
+                    Employees vet = vets.stream().filter(v -> v.getUsersId() == shift.getVetId()).findFirst().orElse(null);
+
+                    if(vet.getName().toLowerCase().contains(keyword) || vet.getSurname().toLowerCase().contains(keyword) ||
+                            shift.getStartDate().toLocalDateTime().toString().toLowerCase().contains(keyword) || shift.getEndDate().toLocalDateTime().toString().toLowerCase().contains(keyword))
+                        return true;
+
+                    return false;
+                });
+            }));
+
+            SortedList<Visits> visitsSortedList = new SortedList<>(visitsFilteredList);
+            visitsSortedList.comparatorProperty().bind(visitsTableView.comparatorProperty());
+
+            SortedList<Shifts> shiftsSortedList = new SortedList<>(shiftsFilteredList);
+            shiftsSortedList.comparatorProperty().bind(shiftsTableView.comparatorProperty());
+
+            shiftsTableView.setItems(shiftsSortedList);
+            visitsTableView.setItems(visitsSortedList);
 
             LoggedUserInfo.getInstance().setEmployee(employee);
         }
@@ -235,7 +463,11 @@ public class HomeFxController implements Initializable
     }
 
     public void OnAddPatientSuccessful(Patients p) {
-        //patientList.getItems().add(p);
+        pets.add(p);
+    }
+
+    public void OnAddOwnerSuccessful(Owners o) {
+        owners.add(o);
     }
 
     @FXML void OnAddVisit(@SuppressWarnings("UnusedParameter")ActionEvent event) {

@@ -69,7 +69,7 @@
                                                 <Insets left="25.0" right="25.0" top="15.0" />
                                              </VBox.margin>
                                           </HBox>
-                                          <TableView fx:id="shiftsTableView" prefHeight="200.0" prefWidth="200.0" style="-fx-alignment: CENTER;" tableMenuButtonVisible="true">
+                                          <TableView fx:id="shiftsTableView" prefHeight="200.0" prefWidth="200.0" style="-fx-alignment: CENTER;">
                                             <columns>
                                               <TableColumn fx:id="shiftStartDateCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Start Date" />
                                               <TableColumn fx:id="shiftEndDateCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="End Date" />
@@ -111,12 +111,12 @@
                                           </HBox>
                                           <TableView fx:id="visitsTableView" prefHeight="216.0" prefWidth="1139.0">
                                             <columns>
-                                              <TableColumn fx:id="visitHourCol" prefWidth="75.0" text="Hour" />
-                                                <TableColumn fx:id="visitVetCol" prefWidth="75.0" text="Vet" />
-                                              <TableColumn fx:id="visitPetCol" prefWidth="75.0" text="Pet Name" />
-                                                <TableColumn fx:id="visitSpeciesCol" prefWidth="75.0" text="Species" />
-                                                <TableColumn fx:id="visitBreedCol" prefWidth="75.0" text="Breed" />
-                                                <TableColumn fx:id="visitOwnerCol" prefWidth="75.0" text="Owner" />
+                                              <TableColumn fx:id="visitHourCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Hour" />
+                                                <TableColumn fx:id="visitVetCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Vet" />
+                                              <TableColumn fx:id="visitPetCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Pet Name" />
+                                                <TableColumn fx:id="visitSpeciesCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Species" />
+                                                <TableColumn fx:id="visitBreedCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Breed" />
+                                                <TableColumn fx:id="visitOwnerCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Owner" />
                                             </columns>
                                              <VBox.margin>
                                                 <Insets left="25.0" right="25.0" top="10.0" />
