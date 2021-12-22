@@ -27,6 +27,8 @@ import java.util.ResourceBundle;
 
 public class AddVisitFxController implements Initializable
 {
+    private HomeFxController ctrl = null;
+
     @FXML private HBox dateHBox;
 
     @FXML private TextField selectedPatientField;
@@ -250,6 +252,9 @@ public class AddVisitFxController implements Initializable
             entityManager.persist(visit);
 
             entityManager.getTransaction().commit();
+
+            if(ctrl != null)
+                ctrl.OnAddVisitSuccessful(visit);
         }
         catch (EntityExistsException | NonUniqueResultException | RollbackException exception)
         {
@@ -272,5 +277,9 @@ public class AddVisitFxController implements Initializable
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();
         thisStage.close();
+    }
+
+    public void setHomeController(HomeFxController ctrl) {
+        this.ctrl = ctrl;
     }
 }

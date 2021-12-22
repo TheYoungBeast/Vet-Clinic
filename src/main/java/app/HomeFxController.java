@@ -6,15 +6,22 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 import javax.persistence.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.ResourceBundle;
+
+interface CommandVisitDetail extends Command
+{
+    void setVisit(Visits v);
+}
 
 public class HomeFxController implements Initializable
 {
@@ -61,6 +68,42 @@ public class HomeFxController implements Initializable
             con.setHomeController(ctrl);
         }
     };
+
+    private final Command commandAddVisit = new Command() {
+        private HomeFxController ctrl;
+
+        @Override
+        public void setDelegate(Object o) {
+            ctrl = (HomeFxController) o;
+        }
+
+        @Override
+        public void execute(Object o) {
+            AddVisitFxController con = (AddVisitFxController) o;
+            con.setHomeController(ctrl);
+        }
+    };
+
+    private final CommandVisitDetail commandVisitDetail = new CommandVisitDetail() {
+        private Visits visit;
+
+        @Override
+        public void setVisit(Visits v) {
+           visit = v;
+        }
+
+        @Override
+        public void setDelegate(Object o) {
+            // empty, not used
+        }
+
+        @Override
+        public void execute(Object o) {
+            VisitsDetailsFxController con = (VisitsDetailsFxController) o;
+            con.setVisit(visit);
+        }
+    };
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -452,6 +495,18 @@ public class HomeFxController implements Initializable
             EntityManagerFacade.close();
         }
 
+        visitsTableView.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                Visits selectedItem = visitsTableView.getSelectionModel().getSelectedItem();
+
+                if(selectedItem == null)
+                    return;
+
+                commandVisitDetail.setVisit(selectedItem);
+                Main.createStage("../VisitsDetailsPage.fxml", "Vet Clinic: Visit Details", commandVisitDetail);
+            }
+        });
+
         String helloMsg = String.format(labelHelloUser.getText(), LoggedUserInfo.getInstance().getEmployee().getName(),
                 LoggedUserInfo.getInstance().getEmployee().getSurname());
         labelHelloUser.setText(helloMsg);
@@ -471,6 +526,9 @@ public class HomeFxController implements Initializable
     }
 
     @FXML void OnAddVisit(@SuppressWarnings("UnusedParameter")ActionEvent event) {
-        Main.createStage("../AddVisitPage.fxml", "Vet Clinic: Add Visit");
+        commandAddVisit.setDelegate(this);
+        Main.createStage("../AddVisitPage.fxml", "Vet Clinic: Add Visit", commandAddVisit);
     }
+
+    public void OnAddVisitSuccessful(Visits visit) { visits.add(visit); }
 }
