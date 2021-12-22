@@ -40,6 +40,8 @@ public class HomeFxController implements Initializable
     @FXML private TableColumn<Shifts, String> shiftEndHourCol;
     @FXML private TableColumn<Shifts, String> shiftNameCol;
     @FXML private TableColumn<Shifts, String> shiftSurnameCol;
+    @FXML private TableColumn<Shifts, String> shiftClinicCol;
+
 
     @FXML private TableColumn<Visits, String> visitHourCol;
     @FXML private TableColumn<Visits, String> visitVetCol;
@@ -54,6 +56,7 @@ public class HomeFxController implements Initializable
     private ArrayList<Employees> vets = null;
     private ArrayList<Patients> pets = null;
     private ArrayList<Owners> owners = null;
+    private ArrayList<Clinics> clinics = null;
 
     private final Command command = new Command() {
         private HomeFxController ctrl;
@@ -204,7 +207,7 @@ public class HomeFxController implements Initializable
             }
         });
 
-        shiftSurnameCol.setCellFactory(factory -> new TableCell<Shifts, String>() {
+        shiftSurnameCol.setCellFactory(factory -> new TableCell<Shifts,String>() {
             @Override
             protected void updateItem(String s, boolean b) {
                 super.updateItem(s, b);
@@ -229,6 +232,29 @@ public class HomeFxController implements Initializable
                 setText(vet.getSurname());
             }
         });
+       shiftClinicCol.setCellFactory(factory -> new TableCell<Shifts,String>(){
+        @Override
+        protected void updateItem(String s, boolean b) {
+                super.updateItem(s,b);
+                if(b){
+                    setText(null);
+                    return;
+                }
+                Shifts shift = getTableView().getItems().get(getIndex());
+                if(shift == null) {
+                    setText(null);
+                    return;
+                }
+
+                Clinics clinic = clinics.stream().filter(e->e.getClinicId() == shift.getClinicId()).findFirst().orElse(null);
+                if(clinic == null)
+                {
+                    setText(null);
+                    return;
+                }
+                setText(clinic.getName());
+            }
+    });
 
         // visits cell factory
         visitHourCol.setCellFactory(factory -> new TableCell<Visits, String>() {
@@ -420,6 +446,9 @@ public class HomeFxController implements Initializable
 
             TypedQuery<Owners> allOwnersQuery = entityManager.createNamedQuery("Owners.AllOwners", Owners.class);
             owners = new ArrayList<>( allOwnersQuery.getResultList() );
+
+           TypedQuery<Clinics> allClinicsQuery = entityManager.createNamedQuery("Clinics.AllClinics", Clinics.class);
+            clinics = new ArrayList<>(allClinicsQuery.getResultList());
 
             Query allVisitsToday = entityManager.createNativeQuery("SELECT * from VISITS v where trunc(v.VISIT_DATE) = TO_DATE(TO_CHAR(cast(sysdate as date),'YYYY-MM-DD'))", Visits.class);
             visits.addAll(allVisitsToday.getResultList());

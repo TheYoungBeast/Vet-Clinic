@@ -1,11 +1,9 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@NamedQuery(name="Clinics.AllClinics", query = "select c from Clinics c")
 public class Clinics {
     private long clinicId;
     private String name;
