@@ -24,8 +24,6 @@ import java.util.ResourceBundle;
 public class VisitsDetailsFxController implements Initializable
 {
     private static final int maxLength = 2048;
-
-    private ObservableValue<String> status =  new SimpleStringProperty(null);
     private Visits visit;
 
     @FXML private AnchorPane anchorPane;
@@ -35,21 +33,20 @@ public class VisitsDetailsFxController implements Initializable
     @FXML private TextArea descriptionTextArea;
     @FXML private TextField prescriptionNo;
     @FXML private Button submitButton;
+    @FXML private Button prescribeButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         anchorPane.sceneProperty().addListener((observableScene, oldScene, newScene) -> {
             if (oldScene == null && newScene != null) {
-                // scene is set for the first time. Now its the time to listen stage changes.
                 newScene.windowProperty().addListener((observableWindow, oldWindow, newWindow) -> {
                     if (oldWindow == null && newWindow != null) {
-                        // stage is set. now is the right time to do whatever we need to the stage in the controller.
-
                         if(visit == null || visit.getStatus().toLowerCase().trim().equals("done")) {
                             submitButton.setDisable(true);
                             statusCheckbox.setDisable(true);
                             statusInfo.setVisible(true);
+                            prescribeButton.setDisable(true);
                         }
                     }
                 });
@@ -65,6 +62,7 @@ public class VisitsDetailsFxController implements Initializable
                 priceTextField.setDisable(!newValue);
                 descriptionTextArea.setDisable(!newValue);
                 prescriptionNo.setDisable(!newValue);
+                prescribeButton.setDisable(!newValue);
             }
         });
 
@@ -91,7 +89,6 @@ public class VisitsDetailsFxController implements Initializable
 
     public void setVisit(Visits visit) {
         this.visit = visit;
-        status = new SimpleStringProperty(visit.getStatus());
     }
 
     @FXML private void OnSubmit(ActionEvent event) {
@@ -139,5 +136,9 @@ public class VisitsDetailsFxController implements Initializable
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();
         thisStage.close();
+    }
+
+    public void OnPrescribe(ActionEvent event) {
+        Main.createStage("../PrescribePrescriptionPage.fxml", "Vet Clinic: Make Prescription");
     }
 }

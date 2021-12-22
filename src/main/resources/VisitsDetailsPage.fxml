@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
 <AnchorPane fx:id="anchorPane" prefHeight="467.0" prefWidth="812.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.VisitsDetailsFxController">
    <children>
       <Label layoutX="40.0" layoutY="18.0" prefHeight="17.0" prefWidth="43.0" text="Status:" />
@@ -34,5 +33,6 @@
          </children>
       </HBox>
       <Label fx:id="statusInfo" layoutX="168.0" layoutY="18.0" text="Visit is already done" textFill="#f20101" visible="false" />
+      <Button fx:id="prescribeButton" disable="true" layoutX="274.0" layoutY="365.0" mnemonicParsing="false" onAction="#OnPrescribe" style="-fx-background-color: lightblue;" text="Prescribe" />
    </children>
 </AnchorPane>
