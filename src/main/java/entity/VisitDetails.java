@@ -3,6 +3,7 @@ package entity;
 import javax.persistence.*;
 
 @Entity
+@NamedQuery(name = "VisitDetails.ById", query = "select vd from VisitDetails vd where vd.visitId = ?1")
 public class VisitDetails {
     private long visitId;
     private long cena;

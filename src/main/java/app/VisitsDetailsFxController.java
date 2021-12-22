@@ -2,7 +2,6 @@ package app;
 
 import entity.VisitDetails;
 import entity.Visits;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -14,10 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.hibernate.Session;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.RollbackException;
+import javax.persistence.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -69,6 +65,34 @@ public class VisitsDetailsFxController implements Initializable
                             statusCheckbox.setDisable(true);
                             statusInfo.setVisible(true);
                             prescribeButton.setDisable(true);
+                            prescriptionNo.setDisable(true);
+
+                            EntityManager entityManager = EntityManagerFacade.createEntityManager();
+
+                            try {
+                                entityManager.getTransaction().begin();
+
+                                TypedQuery<VisitDetails> namedQuery = entityManager.createNamedQuery("VisitDetails.ById", VisitDetails.class);
+                                namedQuery.setParameter(1, visit.getVisitId());
+                                VisitDetails result = namedQuery.getSingleResult();
+
+                                prescriptionNo.setText(result.getPrescriptionNo().toString());
+                                descriptionTextArea.setText(result.getDescription());
+                                priceTextField.setText(String.valueOf(result.getCena()));
+
+                                entityManager.getTransaction().commit();
+                            }
+                            catch (EntityExistsException | NonUniqueResultException | RollbackException exception)
+                            {
+                                exception.printStackTrace();
+                                exception.getCause();
+
+                                if(entityManager.getTransaction().isActive())
+                                    entityManager.getTransaction().rollback();
+                            }
+                            finally {
+                                EntityManagerFacade.close();
+                            }
                         }
                     }
                 });
