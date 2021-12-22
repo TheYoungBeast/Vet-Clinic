@@ -16,7 +16,7 @@
       <TableView fx:id="prescriptedDrugsTableView" layoutX="14.0" layoutY="52.0" prefHeight="200.0" prefWidth="570.0">
         <columns>
           <TableColumn fx:id="prescriptedDrugCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Drug " />
-          <TableColumn fx:id="prescriptedAmountCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Amount" />
+          <TableColumn fx:id="prescriptedAmountCol" onEditCommit="#OnEditCommit" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Amount" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -41,8 +41,8 @@
       <TextField fx:id="searchFilter" layoutX="52.0" layoutY="295.0" promptText="search" />
       <HBox alignment="CENTER" layoutX="16.0" layoutY="541.0" prefHeight="17.0" prefWidth="570.0" spacing="50.0">
          <children>
-            <Button mnemonicParsing="false" style="-fx-background-color: lightblue;" text="Prescribe" />
-            <Button mnemonicParsing="false" style="-fx-background-color: lightblue;" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#OnPrescribe" style="-fx-background-color: lightblue;" text="Prescribe" />
+            <Button mnemonicParsing="false" onAction="#OnCancel" style="-fx-background-color: lightblue;" text="Cancel" />
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="14.0" prefHeight="55.0" prefWidth="570.0" spacing="10.0">
@@ -51,7 +51,7 @@
             <TextField fx:id="prescriptionNo" editable="false" />
          </children>
       </HBox>
-      <Button fx:id="prescribeDrugButton" disable="true" layoutX="490.0" layoutY="295.0" mnemonicParsing="false" style="-fx-background-color: lightblue;" text="Prescribe Drug" />
+      <Button fx:id="prescribeDrugButton" disable="true" layoutX="490.0" layoutY="295.0" mnemonicParsing="false" onAction="#OnPrescribeDrug" style="-fx-background-color: lightblue;" text="Prescribe Drug" />
       <ImageView fitHeight="871.0" fitWidth="398.0" layoutX="606.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@funny_dog_6.png" />

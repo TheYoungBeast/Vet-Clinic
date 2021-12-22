@@ -24,7 +24,9 @@ import java.util.ResourceBundle;
 public class VisitsDetailsFxController implements Initializable
 {
     private static final int maxLength = 2048;
+
     private Visits visit;
+    private long prescriptionNumber = 0;
 
     @FXML private AnchorPane anchorPane;
     @FXML private Label statusInfo;
@@ -34,6 +36,26 @@ public class VisitsDetailsFxController implements Initializable
     @FXML private TextField prescriptionNo;
     @FXML private Button submitButton;
     @FXML private Button prescribeButton;
+
+    private CommandVisitDetail commandVisitDetail = new CommandVisitDetail() {
+        Visits visit = null;
+        @Override
+        public void setVisit(Visits v) {
+            visit = v;
+        }
+
+        @Override
+        public void setDelegate(Object o) {
+            // empty
+        }
+
+        @Override
+        public void execute(Object o) {
+            PrescribePrescriptionFxController controller = (PrescribePrescriptionFxController) o;
+            controller.setVisit(visit);
+            controller.setVisitDetailController(VisitsDetailsFxController.this);
+        }
+    };
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -138,7 +160,13 @@ public class VisitsDetailsFxController implements Initializable
         thisStage.close();
     }
 
+    public void setPrescriptionNumber(long number) {
+        prescriptionNumber = number;
+        prescriptionNo.setText(String.valueOf(prescriptionNumber));
+    }
+
     public void OnPrescribe(ActionEvent event) {
-        Main.createStage("../PrescribePrescriptionPage.fxml", "Vet Clinic: Make Prescription");
+        commandVisitDetail.setVisit(visit);
+        Main.createStage("../PrescribePrescriptionPage.fxml", "Vet Clinic: Make Prescription", commandVisitDetail);
     }
 }
