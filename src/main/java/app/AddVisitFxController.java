@@ -239,7 +239,7 @@ public class AddVisitFxController implements Initializable
                 newScene.windowProperty().addListener((observableWindow, oldWindow, newWindow) -> {
                     if (oldWindow == null && newWindow != null) {
                         if (editMode) {
-                            addButton.setText("Edit");
+                            addButton.setText("Update");
                             Patients pet = (Patients) Arrays.stream(patientsList.toArray()).filter(p -> ((Patients)p).getPetId() == visit.getPetId()).findFirst().orElse(null);
                             selectedPatientField.setText(String.format("%s %s %s", pet.getPetName(), pet.getSpecies(), pet.getBreed()));
                             Employees vet = this.employees.stream().filter(e -> e.getUsersId() == visit.getVetId()).findFirst().orElse(null);
