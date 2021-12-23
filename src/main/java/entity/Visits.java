@@ -1,12 +1,10 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@NamedQuery(name="Visits.ById", query = "select v from Visits v where v.visitId = ?1")
 public class Visits {
     private long visitId;
     private long vetId;

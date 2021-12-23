@@ -583,4 +583,8 @@ public class HomeFxController implements Initializable
         commandAddClinic.setDelegate(this);
         Main.createStage("../AddClinicPage.fxml","Vet Clinic: Add Clinic",commandAddClinic);
     }
+
+    public void OnCheckPrescription(ActionEvent event) {
+        Main.createStage("../PrescriptionCheckPage.fxml", "Vet Clinic: Check Prescription");
+    }
 }

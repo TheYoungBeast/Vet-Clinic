@@ -31,9 +31,14 @@
                         <Image url="@Pet_Doctor-512.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="418.0" layoutY="41.0" mnemonicParsing="false" onAction="#OnAddPatient" style="-fx-background-color: lightblue;" text="Add Patient" />
-                  <Button fx:id="addVisit" layoutX="542.0" layoutY="41.0" mnemonicParsing="false" onAction="#OnAddVisit" style="-fx-background-color: lightblue;" text="Add Visit" />
-                   <Button fx:id="addClinic" layoutX="650.0" layoutY="41.0" mnemonicParsing="false" onAction="#OnAddClinic" style="-fx-background-color: lightblue;" text="Add Clinic"/>
+                  <HBox alignment="CENTER" layoutX="167.0" layoutY="-3.0" prefHeight="100.0" prefWidth="793.0" spacing="50.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#OnAddPatient" prefHeight="30.0" prefWidth="104.0" style="-fx-background-color: lightblue;" text="Add Patient" />
+                        <Button fx:id="addVisit" mnemonicParsing="false" onAction="#OnAddVisit" style="-fx-background-color: lightblue;" text="Add Visit" />
+                         <Button fx:id="addClinic" mnemonicParsing="false" onAction="#OnAddClinic" style="-fx-background-color: lightblue;" text="Add Clinic" />
+                        <Button mnemonicParsing="false" onAction="#OnCheckPrescription" style="-fx-background-color: lightblue;" text="Check Prescription" />
+                     </children>
+                  </HBox>
                </children>
             </AnchorPane>
             <VBox prefHeight="658.0" prefWidth="1219.0">

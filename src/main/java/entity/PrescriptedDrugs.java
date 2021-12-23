@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @IdClass(PrescriptedDrugsPK.class)
+@NamedQuery(name="PrescriptedDrugs.ByVisitId", query = "select pd from PrescriptedDrugs pd where pd.visitId = ?1")
 public class PrescriptedDrugs {
     private long visitId;
     private long drugId;
