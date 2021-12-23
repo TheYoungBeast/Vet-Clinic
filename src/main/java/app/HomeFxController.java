@@ -87,6 +87,22 @@ public class HomeFxController implements Initializable
         }
     };
 
+    private final Command commandAddClinic = new Command() {
+        private HomeFxController ctrl;
+
+        @Override
+        public void setDelegate(Object o) {
+            ctrl = (HomeFxController) o;
+        }
+
+        @Override
+        public void execute(Object o) {
+        AddClinicFxController con = (AddClinicFxController) o;
+        con.setHomeController(ctrl);
+        }
+    };
+
+
     private final CommandVisitDetail commandVisitDetail = new CommandVisitDetail() {
         private Visits visit;
 
@@ -559,5 +575,12 @@ public class HomeFxController implements Initializable
         Main.createStage("../AddVisitPage.fxml", "Vet Clinic: Add Visit", commandAddVisit);
     }
 
+
     public void OnAddVisitSuccessful(Visits visit) { visits.add(visit); }
+
+    @FXML
+    public void OnAddClinic(ActionEvent actionEvent) {
+        commandAddClinic.setDelegate(this);
+        Main.createStage("../AddClinicPage.fxml","Vet Clinic: Add Clinic",commandAddClinic);
+    }
 }
