@@ -35,7 +35,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#OnAddPatient" style="-fx-background-color: lightblue;" text="Add Patient" />
                         <Button fx:id="addVisit" mnemonicParsing="false" onAction="#OnAddVisit" style="-fx-background-color: lightblue;" text="Add Visit" />
-                         <Button fx:id="addClinic" mnemonicParsing="false" onAction="#OnAddClinic" style="-fx-background-color: lightblue;" text="Add Clinic" />
+                       <!--  <Button fx:id="addClinic" mnemonicParsing="false" onAction="#OnAddClinic" style="-fx-background-color: lightblue;" text="Add Clinic" />-->
                         <Button mnemonicParsing="false" onAction="#OnCheckPrescription" style="-fx-background-color: lightblue;" text="Check Prescription" />
                      </children>
                   </HBox>
