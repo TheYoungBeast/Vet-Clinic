@@ -33,7 +33,7 @@
                   </ImageView>
                   <HBox alignment="CENTER" layoutX="167.0" layoutY="-3.0" prefHeight="100.0" prefWidth="793.0" spacing="50.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#OnAddPatient" prefHeight="30.0" prefWidth="104.0" style="-fx-background-color: lightblue;" text="Add Patient" />
+                        <Button mnemonicParsing="false" onAction="#OnAddPatient" style="-fx-background-color: lightblue;" text="Add Patient" />
                         <Button fx:id="addVisit" mnemonicParsing="false" onAction="#OnAddVisit" style="-fx-background-color: lightblue;" text="Add Visit" />
                          <Button fx:id="addClinic" mnemonicParsing="false" onAction="#OnAddClinic" style="-fx-background-color: lightblue;" text="Add Clinic" />
                         <Button mnemonicParsing="false" onAction="#OnCheckPrescription" style="-fx-background-color: lightblue;" text="Check Prescription" />
@@ -132,6 +132,15 @@
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                              </columnResizePolicy>
                                           </TableView>
+                                          <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="1207.0" spacing="20.0">
+                                             <children>
+                                                <Button fx:id="editVisitBtn" disable="true" mnemonicParsing="false" onAction="#OnVisitEdit" style="-fx-background-color: lightblue;" text="Edit Visit" />
+                                                <Button fx:id="cancelVisitBtn" disable="true" mnemonicParsing="false" onAction="#OnVisitCancel" style="-fx-background-color: lightblue;" text="Cancel Visit" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets left="25.0" right="25.0" />
+                                             </VBox.margin>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>

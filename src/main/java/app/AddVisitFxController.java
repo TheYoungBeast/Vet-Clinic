@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.hibernate.Session;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -22,12 +23,17 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddVisitFxController implements Initializable
 {
     private HomeFxController ctrl = null;
+    private boolean editMode = false;
+    private Visits visit = null;
+
+    @FXML private Button addButton;
 
     @FXML private HBox dateHBox;
 
@@ -227,6 +233,26 @@ public class AddVisitFxController implements Initializable
                 }
             }
         });
+
+        addButton.sceneProperty().addListener((observableScene, oldScene, newScene) -> {
+            if (oldScene == null && newScene != null) {
+                newScene.windowProperty().addListener((observableWindow, oldWindow, newWindow) -> {
+                    if (oldWindow == null && newWindow != null) {
+                        if (editMode) {
+                            addButton.setText("Edit");
+                            Patients pet = (Patients) Arrays.stream(patientsList.toArray()).filter(p -> ((Patients)p).getPetId() == visit.getPetId()).findFirst().orElse(null);
+                            selectedPatientField.setText(String.format("%s %s %s", pet.getPetName(), pet.getSpecies(), pet.getBreed()));
+                            Employees vet = this.employees.stream().filter(e -> e.getUsersId() == visit.getVetId()).findFirst().orElse(null);
+                            selectedVetField.setText(String.format("%s %s", vet.getName(), vet.getSurname()));
+
+                            selectedPatient = pet;
+                            selectedVet = vet;
+                            dateTimePicker.setDateTimeValue(visit.getDate().toLocalDateTime());
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @FXML private void OnVisitAdd(ActionEvent event) {
@@ -236,36 +262,59 @@ public class AddVisitFxController implements Initializable
 
         EntityManager entityManager = EntityManagerFacade.createEntityManager();
 
-        try {
-            entityManager.getTransaction().begin();
+        if(!editMode) {
+            try {
+                entityManager.getTransaction().begin();
 
-            Query nativeQuery = entityManager.createNativeQuery("SELECT SBD_ST_PS6_4.SEQUENCE_ID_VISITS.nextval as id FROM DUAL");
-            long id = ((BigDecimal) nativeQuery.getSingleResult()).longValue();
+                Query nativeQuery = entityManager.createNativeQuery("SELECT SBD_ST_PS6_4.SEQUENCE_ID_VISITS.nextval as id FROM DUAL");
+                long id = ((BigDecimal) nativeQuery.getSingleResult()).longValue();
 
-            Visits visit = new Visits();
-            visit.setVisitId(id);
+                Visits visit = new Visits();
+                visit.setVisitId(id);
+                visit.setPetId(selectedPatient.getPetId());
+                visit.setVetId(selectedVet.getUsersId());
+                visit.setDate(Timestamp.valueOf(dateTimePicker.getDateTimeValue()));
+                visit.setStatus("PENDING");
+
+                entityManager.persist(visit);
+
+                entityManager.getTransaction().commit();
+
+                if (ctrl != null)
+                    ctrl.OnAddVisitSuccessful(visit);
+            } catch (EntityExistsException | NonUniqueResultException | RollbackException exception) {
+                exception.printStackTrace();
+                exception.getCause();
+
+                if (entityManager.getTransaction().isActive())
+                    entityManager.getTransaction().rollback();
+            } finally {
+                EntityManagerFacade.close();
+            }
+        }
+        else {
+
             visit.setPetId(selectedPatient.getPetId());
             visit.setVetId(selectedVet.getUsersId());
             visit.setDate(Timestamp.valueOf(dateTimePicker.getDateTimeValue()));
-            visit.setStatus("PENDING");
 
-            entityManager.persist(visit);
+            try {
+                entityManager.getTransaction().begin();
+                Session session = entityManager.unwrap(Session.class);
+                session.update(session.contains(visit) ? visit : entityManager.merge(visit));
+                entityManager.getTransaction().commit();
+            }
+            catch (PersistenceException exception) {
+                exception.printStackTrace();
+                exception.getCause();
 
-            entityManager.getTransaction().commit();
+                if (entityManager.getTransaction().isActive())
+                    entityManager.getTransaction().rollback();
+            } finally {
+                EntityManagerFacade.close();
+            }
 
-            if(ctrl != null)
-                ctrl.OnAddVisitSuccessful(visit);
-        }
-        catch (EntityExistsException | NonUniqueResultException | RollbackException exception)
-        {
-            exception.printStackTrace();
-            exception.getCause();
-
-            if(entityManager.getTransaction().isActive())
-                entityManager.getTransaction().rollback();
-        }
-        finally {
-            EntityManagerFacade.close();
+            ctrl.OnVisitEditSuccessful(visit);
         }
 
         Node node = (Node) event.getSource();
@@ -281,5 +330,13 @@ public class AddVisitFxController implements Initializable
 
     public void setHomeController(HomeFxController ctrl) {
         this.ctrl = ctrl;
+    }
+
+    public void setEditMode() {
+        editMode = true;
+    }
+
+    public void setVisit(Visits visit) {
+        this.visit = visit;
     }
 }

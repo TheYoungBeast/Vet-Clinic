@@ -76,7 +76,9 @@ public class VisitsDetailsFxController implements Initializable
                                 namedQuery.setParameter(1, visit.getVisitId());
                                 VisitDetails result = namedQuery.getSingleResult();
 
-                                prescriptionNo.setText(result.getPrescriptionNo().toString());
+                                if(result.getPrescriptionNo() != null)
+                                    prescriptionNo.setText(result.getPrescriptionNo().toString());
+
                                 descriptionTextArea.setText(result.getDescription());
                                 priceTextField.setText(String.valueOf(result.getCena()));
 

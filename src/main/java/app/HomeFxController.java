@@ -1,6 +1,8 @@
 package app;
 
 import entity.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -12,9 +14,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import org.hibernate.Session;
 
 import javax.persistence.*;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -25,6 +29,9 @@ interface CommandVisitDetail extends Command
 
 public class HomeFxController implements Initializable
 {
+    @FXML private Button editVisitBtn;
+    @FXML private Button cancelVisitBtn;
+
     @FXML
     private Label labelHelloUser;
 
@@ -57,6 +64,8 @@ public class HomeFxController implements Initializable
     private ArrayList<Patients> pets = null;
     private ArrayList<Owners> owners = null;
     private ArrayList<Clinics> clinics = null;
+
+    private Visits selectedVisit = null;
 
     private final Command command = new Command() {
         private HomeFxController ctrl;
@@ -552,6 +561,22 @@ public class HomeFxController implements Initializable
             }
         });
 
+        visitsTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Visits>() {
+            @Override
+            public void changed(ObservableValue<? extends Visits> observableValue, Visits visits, Visits t1) {
+                if(t1 == null || t1.getStatus().toLowerCase().equals("done")) {
+                    editVisitBtn.setDisable(true);
+                    cancelVisitBtn.setDisable(true);
+                }
+                else {
+                    editVisitBtn.setDisable(false);
+                    cancelVisitBtn.setDisable(false);
+                }
+
+                selectedVisit = t1;
+            }
+        });
+
         String helloMsg = String.format(labelHelloUser.getText(), LoggedUserInfo.getInstance().getEmployee().getName(),
                 LoggedUserInfo.getInstance().getEmployee().getSurname());
         labelHelloUser.setText(helloMsg);
@@ -576,7 +601,11 @@ public class HomeFxController implements Initializable
     }
 
 
-    public void OnAddVisitSuccessful(Visits visit) { visits.add(visit); }
+    public void OnAddVisitSuccessful(Visits visit) {
+        LocalDate date = LocalDate.now();
+        if(visit.getDate().toLocalDateTime().toLocalDate().equals(date))
+            visits.add(visit);
+    }
 
     @FXML
     public void OnAddClinic(ActionEvent actionEvent) {
@@ -586,5 +615,90 @@ public class HomeFxController implements Initializable
 
     public void OnCheckPrescription(ActionEvent event) {
         Main.createStage("../PrescriptionCheckPage.fxml", "Vet Clinic: Check Prescription");
+    }
+
+    public void OnVisitEdit(ActionEvent event) {
+        if(selectedVisit == null) {
+            editVisitBtn.setDisable(true);
+            return;
+        }
+        final CommandVisitDetail comVisitDetail = new CommandVisitDetail() {
+            private Visits visit = null;
+            private HomeFxController ctrl = null;
+            @Override
+            public void setVisit(Visits v) {
+                visit = v;
+            }
+
+            @Override
+            public void setDelegate(Object o) {
+                ctrl = (HomeFxController) o;
+            }
+
+            @Override
+            public void execute(Object o) {
+                AddVisitFxController controller = (AddVisitFxController) o;
+                controller.setHomeController(ctrl);
+                controller.setEditMode();
+                controller.setVisit(visit);
+            }
+        };
+
+        comVisitDetail.setVisit(selectedVisit);
+        comVisitDetail.setDelegate(this);
+        Main.createStage("../AddVisitPage.fxml", "Vet Clinic: Edit Visit", comVisitDetail);
+        selectedVisit = null;
+        editVisitBtn.setDisable(true);
+        cancelVisitBtn.setDisable(true);
+    }
+
+    public void OnVisitCancel(ActionEvent event) {
+        if(selectedVisit == null) {
+            cancelVisitBtn.setDisable(true);
+            return;
+        }
+
+        if(selectedVisit.getStatus().toLowerCase().equals("done")) {
+            return;
+        }
+
+        EntityManager entityManager = EntityManagerFacade.createEntityManager();
+
+        try {
+            entityManager.getTransaction().begin();
+            Session session = entityManager.unwrap(Session.class);
+            session.delete(session.contains(selectedVisit) ? selectedVisit : session.merge(selectedVisit));
+            entityManager.getTransaction().commit();
+        }
+        catch (PersistenceException exception)
+        {
+            exception.printStackTrace();
+            exception.getCause();
+
+            if(entityManager.getTransaction().isActive())
+                entityManager.getTransaction().rollback();
+        }
+        finally {
+            EntityManagerFacade.close();
+        }
+
+
+        visits.remove(selectedVisit);
+        selectedVisit = null;
+        editVisitBtn.setDisable(true);
+        cancelVisitBtn.setDisable(true);
+    }
+
+    public void OnVisitEditSuccessful(Visits visit) {
+        long index = 0;
+        for (; index <visits.size(); index++) {
+            if(visits.get((int) index).getVisitId() == visit.getVisitId())
+                break;
+        }
+
+        if(index == visits.size())
+            return;
+
+        visits.set((int) index, visit);
     }
 }
